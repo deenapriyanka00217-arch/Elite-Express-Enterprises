@@ -14,29 +14,157 @@ import {
   MapPin, 
   Menu, 
   X, 
-  Sun, 
-  Moon,
   ArrowRight,
   CheckCircle2,
-  ChevronRight
+  ChevronRight,
+  Instagram,
+  ArrowUp,
+  MessageCircle
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
+const testimonials = [
+  {
+    name: "Rajesh Kumar",
+    role: "IT Park Manager",
+    content: "Elite Express has transformed our office security. Their personnel are professional, well-trained, and always on time. The peace of mind they provide is invaluable.",
+    avatar: "RK"
+  },
+  {
+    name: "Priya S.",
+    role: "Homeowner",
+    content: "The pest control service was exceptional. We haven't seen a single pest since their first visit. They were very thorough and used safe products around my kids.",
+    avatar: "PS"
+  },
+  {
+    name: "Vikram",
+    role: "Retail Store Owner",
+    content: "Highly recommend their CCTV installation. The video quality is top-notch and the AMC service is very reliable. They respond quickly whenever we have questions.",
+    avatar: "V"
+  },
+  {
+    name: "Anjali Devi",
+    role: "Apartment Association President",
+    content: "We've been using their housekeeping services for over a year. The staff is diligent and the common areas have never looked cleaner. Excellent management.",
+    avatar: "AD"
+  },
+  {
+    name: "Suresh Raina",
+    role: "Warehouse Manager",
+    content: "Their security guards are incredibly alert. We had a minor incident last month that was handled with extreme professionalism and speed. Truly elite service.",
+    avatar: "SR"
+  },
+  {
+    name: "Meera Krishnan",
+    role: "Boutique Owner",
+    content: "The CCTV setup they installed is so easy to use. I can monitor my shop from my phone anywhere. The installation was clean and very professional.",
+    avatar: "MK"
+  },
+  {
+    name: "Dr. Arun",
+    role: "Clinic Director",
+    content: "Maintaining hygiene is critical for my clinic. Elite Express's pest control and cleaning services are top-tier. They understand the specific needs of healthcare spaces.",
+    avatar: "DA"
+  },
+  {
+    name: "Karthik S.",
+    role: "Tech Startup Founder",
+    content: "Fast, reliable, and tech-savvy. They integrated our security systems perfectly. Their customer support is always available when we need them.",
+    avatar: "KS"
+  },
+  {
+    name: "Shanthi",
+    role: "Villa Owner",
+    content: "I feel much safer at home now. Their security personnel are polite yet firm. The housekeeping team is also very trustworthy and efficient.",
+    avatar: "S"
+  },
+  {
+    name: "Ganesh",
+    role: "Restaurant Owner",
+    content: "Pest control is a major concern for us. Since partnering with Elite Express, we've had zero issues. Their regular maintenance visits are always on schedule.",
+    avatar: "G"
+  }
+];
+
+function TestimonialScroll({ isDarkMode }: { isDarkMode: boolean }) {
+  return (
+    <div className="relative h-[500px] overflow-hidden rounded-3xl">
+      <motion.div
+        animate={{
+          y: [0, -1200],
+        }}
+        transition={{
+          duration: 30,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+        className="flex flex-col gap-6 pr-4"
+      >
+        {[...testimonials, ...testimonials].map((t, i) => (
+          <div 
+            key={i} 
+            className={`p-6 rounded-2xl border transition-colors ${
+              isDarkMode 
+                ? 'bg-slate-900/40 border-slate-800 hover:bg-slate-900/60' 
+                : 'bg-white border-slate-100 shadow-sm hover:shadow-md'
+            }`}
+          >
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-amber-500/20">
+                {t.avatar}
+              </div>
+              <div>
+                <h5 className="font-bold text-sm">{t.name}</h5>
+                <p className="text-xs text-amber-500 font-medium">{t.role}</p>
+              </div>
+            </div>
+            <p className={`text-sm italic leading-relaxed ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+              "{t.content}"
+            </p>
+          </div>
+        ))}
+      </motion.div>
+      
+      {/* Fade Gradients */}
+      <div className={`absolute inset-x-0 top-0 h-24 bg-gradient-to-b pointer-events-none z-10 ${isDarkMode ? 'from-slate-950 to-transparent' : 'from-white to-transparent'}`}></div>
+      <div className={`absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t pointer-events-none z-10 ${isDarkMode ? 'from-slate-950 to-transparent' : 'from-white to-transparent'}`}></div>
+    </div>
+  );
+}
+
 export default function App() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [heroTextIndex, setHeroTextIndex] = useState(0);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  const heroPhrases = [
+    "Security",
+    "Housekeeping",
+    "CCTV",
+    "Pest Control",
+    "Risk Control"
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setHeroTextIndex((prev) => (prev + 1) % heroPhrases.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
+      setShowScrollTop(window.scrollY > 500);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const services = [
@@ -44,19 +172,19 @@ export default function App() {
       title: "Security & Housekeeping",
       description: "Professional security personnel and comprehensive housekeeping solutions for residential and commercial spaces.",
       icon: <Shield className="w-8 h-8" />,
-      image: "https://images.unsplash.com/photo-1582139329536-e7284fece509?auto=format&fit=crop&q=80&w=800"
+      image: "https://eliteexpressenterprises.mydpdigital.in/wp-content/uploads/2026/04/1.png"
     },
     {
       title: "Pest Control Services",
       description: "Effective and safe pest management solutions to keep your environment hygienic and pest-free.",
       icon: <Bug className="w-8 h-8" />,
-      image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=800"
+      image: "https://eliteexpressenterprises.mydpdigital.in/wp-content/uploads/2026/04/2.png"
     },
     {
       title: "CCTV - Installation & AMC",
       description: "State-of-the-art surveillance systems with professional installation and reliable Annual Maintenance Contracts.",
       icon: <Camera className="w-8 h-8" />,
-      image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=800"
+      image: "https://eliteexpressenterprises.mydpdigital.in/wp-content/uploads/2026/04/3.png"
     }
   ];
 
@@ -75,11 +203,16 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center shadow-lg shadow-amber-500/20">
-                <Shield className="text-white w-6 h-6" />
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-amber-500 rounded-full flex items-center justify-center shadow-lg shadow-amber-500/20 overflow-hidden">
+                <img 
+                  src="https://eliteexpressenterprises.mydpdigital.in/wp-content/uploads/2026/04/logo.jpg" 
+                  alt="Elite Express Logo" 
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
               </div>
-              <span className={`text-xl font-bold tracking-tight ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
-                ELITE <span className="text-amber-500">EXPRESS</span>
+              <span className={`text-lg sm:text-xl font-bold tracking-tight flex flex-col sm:flex-row sm:items-center leading-none sm:leading-normal ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+                Elite Express <span className="text-amber-500 sm:ml-1.5">Enterprises</span>
               </span>
             </div>
 
@@ -94,29 +227,16 @@ export default function App() {
                   {link.name}
                 </a>
               ))}
-              <button 
-                onClick={toggleDarkMode}
-                className={`p-2 rounded-full transition-colors ${isDarkMode ? 'bg-slate-800 text-amber-400 hover:bg-slate-700' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
-                aria-label="Toggle dark mode"
-              >
-                {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-              </button>
               <a 
-                href="#contact" 
-                className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-2 rounded-full text-sm font-semibold transition-all shadow-lg shadow-amber-500/25 active:scale-95"
+                href="tel:9940207385" 
+                className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-2 rounded-full text-sm font-semibold transition-all shadow-lg shadow-amber-500/25 active:scale-95 flex items-center gap-2"
               >
-                Get a Quote
+                <Phone size={16} /> Call Now
               </a>
             </div>
 
             {/* Mobile Menu Button */}
             <div className="md:hidden flex items-center gap-4">
-              <button 
-                onClick={toggleDarkMode}
-                className={`p-2 rounded-full ${isDarkMode ? 'bg-slate-800 text-amber-400' : 'bg-slate-100 text-slate-600'}`}
-              >
-                {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-              </button>
               <button 
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className={`p-2 rounded-md ${isDarkMode ? 'text-white' : 'text-slate-900'}`}
@@ -128,42 +248,96 @@ export default function App() {
         </div>
 
         {/* Mobile Menu Overlay */}
-        <AnimatePresence>
-          {isMenuOpen && (
-            <motion.div 
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className={`md:hidden border-t ${isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-white border-slate-100'}`}
-            >
-              <div className="px-4 pt-2 pb-6 space-y-1">
-                {navLinks.map((link) => (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    onClick={() => setIsMenuOpen(false)}
-                    className={`block px-3 py-4 text-base font-medium rounded-md ${isDarkMode ? 'text-slate-300 hover:bg-slate-900' : 'text-slate-600 hover:bg-slate-50'}`}
-                  >
-                    {link.name}
-                  </a>
-                ))}
-                <div className="pt-4">
-                  <a 
-                    href="#contact"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="block w-full text-center bg-amber-500 text-white px-6 py-3 rounded-xl font-semibold"
-                  >
-                    Get a Quote
-                  </a>
-                </div>
+        {isMenuOpen && (
+          <div 
+            className={`md:hidden border-t transition-all duration-300 ${isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-white border-slate-100'}`}
+          >
+            <div className="px-4 pt-2 pb-6 space-y-1">
+              {navLinks.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`block px-3 py-4 text-base font-medium rounded-md ${isDarkMode ? 'text-slate-300 hover:bg-slate-900' : 'text-slate-600 hover:bg-slate-50'}`}
+                >
+                  {link.name}
+                </a>
+              ))}
+              <div className="pt-4 space-y-3">
+                <a 
+                  href="tel:9940207385"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex items-center justify-center gap-2 w-full bg-amber-500 text-white px-6 py-3 rounded-xl font-semibold"
+                >
+                  <Phone size={18} /> Call Now
+                </a>
+                <a 
+                  href="#contact"
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`block w-full text-center px-6 py-3 rounded-xl font-semibold border ${isDarkMode ? 'border-slate-800 text-white' : 'border-slate-200 text-slate-900'}`}
+                >
+                  Get a Quote
+                </a>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            </div>
+          </div>
+        )}
       </nav>
 
+      {/* Sticky Socials */}
+      <div className="fixed left-4 bottom-24 z-40 flex flex-col gap-3">
+        <motion.a
+          initial={{ x: -100, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          href="https://wa.me/919940207385"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-[#25D366] text-white p-3 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center justify-center group relative"
+          title="WhatsApp Us"
+        >
+          <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+          </svg>
+          <span className="absolute left-full ml-2 px-2 py-1 bg-slate-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 whitespace-nowrap pointer-events-none transition-opacity">
+            WhatsApp Us
+          </span>
+        </motion.a>
+        <motion.a
+          initial={{ x: -100, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ delay: 0.1 }}
+          href="https://www.instagram.com/elite_express45?igsh=Mmoyd2VucXl2eHZ2"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white p-3 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center justify-center group relative"
+          title="Follow on Instagram"
+        >
+          <Instagram size={24} />
+          <span className="absolute left-full ml-2 px-2 py-1 bg-slate-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 whitespace-nowrap pointer-events-none transition-opacity">
+            Instagram
+          </span>
+        </motion.a>
+      </div>
+
+      {/* Scroll to Top */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            onClick={scrollToTop}
+            className="fixed right-4 bottom-6 z-40 bg-amber-500 text-white p-3 rounded-full shadow-lg hover:bg-amber-600 transition-colors flex items-center justify-center"
+            aria-label="Scroll to top"
+          >
+            <ArrowUp size={24} />
+          </motion.button>
+        )}
+      </AnimatePresence>
+
       {/* Hero Section */}
-      <section id="home" className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+      <section id="home" className="relative pt-24 pb-16 lg:pt-40 lg:pb-24 overflow-hidden">
+        <div className="absolute inset-0 -z-10 bg-dot-pattern text-slate-200/40 opacity-50"></div>
         <div className="absolute top-0 right-0 -z-10 w-1/2 h-full opacity-10">
           <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
             <path fill="#F59E0B" d="M44.7,-76.4C58.3,-69.2,70.1,-58.1,78.6,-44.8C87.1,-31.5,92.3,-15.7,91.8,-0.3C91.3,15.1,85.1,30.2,76.2,43.9C67.3,57.6,55.7,69.9,41.9,77.5C28.1,85.1,14,88,0.2,87.6C-13.6,87.2,-27.2,83.5,-40.4,76.1C-53.6,68.7,-66.4,57.6,-74.8,44.1C-83.2,30.6,-87.2,15.3,-87.5,-0.2C-87.8,-15.7,-84.4,-31.4,-76.1,-45C-67.8,-58.6,-54.6,-70.1,-40.3,-76.9C-26,-83.7,-13,-85.8,0.4,-86.5C13.8,-87.2,27.6,-86.5,44.7,-76.4Z" transform="translate(200 200)" />
@@ -172,10 +346,8 @@ export default function App() {
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
+            <div
+              className="transition-all duration-700 ease-out"
             >
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-500 text-sm font-bold mb-6">
                 <span className="relative flex h-2 w-2">
@@ -184,8 +356,22 @@ export default function App() {
                 </span>
                 Trusted Security Solutions in Chennai
               </div>
-              <h1 className="text-5xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
-                Elite Protection for <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-amber-700">Your Peace of Mind</span>
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
+                Elite Express:&nbsp;
+                <span className="relative inline-block">
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={heroTextIndex}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                      className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-amber-700 pb-2"
+                    >
+                      {heroPhrases[heroTextIndex]}
+                    </motion.span>
+                  </AnimatePresence>
+                </span>
               </h1>
               <p className={`text-lg mb-10 max-w-lg leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
                 Elite Express Enterprises provides premium security, housekeeping, and surveillance services tailored to your specific needs. Professional, reliable, and always alert.
@@ -206,34 +392,46 @@ export default function App() {
               </div>
               
               <div className="mt-12 flex items-center gap-8">
-                <div>
-                  <div className="text-3xl font-bold text-amber-500">10+</div>
-                  <div className={`text-sm ${isDarkMode ? 'text-slate-500' : 'text-slate-500'}`}>Years Experience</div>
-                </div>
+                <motion.div
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                >
+                  <div className="text-3xl font-bold text-amber-500">Since</div>
+                  <div className={`text-sm ${isDarkMode ? 'text-slate-500' : 'text-slate-500'}`}>2022</div>
+                </motion.div>
                 <div className={`w-px h-10 ${isDarkMode ? 'bg-slate-800' : 'bg-slate-200'}`}></div>
-                <div>
+                <motion.div
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.1 }}
+                >
                   <div className="text-3xl font-bold text-amber-500">500+</div>
                   <div className={`text-sm ${isDarkMode ? 'text-slate-500' : 'text-slate-500'}`}>Happy Clients</div>
-                </div>
+                </motion.div>
                 <div className={`w-px h-10 ${isDarkMode ? 'bg-slate-800' : 'bg-slate-200'}`}></div>
-                <div>
-                  <div className="text-3xl font-bold text-amber-500">24/7</div>
-                  <div className={`text-sm ${isDarkMode ? 'text-slate-500' : 'text-slate-500'}`}>Support</div>
-                </div>
+                <motion.div
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.2 }}
+                >
+                  <div className="text-3xl font-bold text-amber-500">99%</div>
+                  <div className={`text-sm ${isDarkMode ? 'text-slate-500' : 'text-slate-500'}`}>Success Rate</div>
+                </motion.div>
               </div>
-            </motion.div>
+            </div>
             
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="relative"
+            <div
+              className="relative transition-all duration-700 delay-200 ease-out"
             >
               <div className="relative rounded-3xl overflow-hidden shadow-2xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=1200" 
-                  alt="Security Surveillance" 
-                  className="w-full h-[500px] object-cover"
+                  src="https://eliteexpressenterprises.mydpdigital.in/wp-content/uploads/2026/04/images.png" 
+                  alt="Elite Express Services" 
+                  className="w-full h-[400px] md:h-[500px] max-h-[60vh] md:max-h-none object-cover object-top transition-transform duration-700 hover:scale-105"
                   referrerPolicy="no-referrer"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
@@ -253,13 +451,14 @@ export default function App() {
               {/* Decorative elements */}
               <div className="absolute -top-6 -right-6 w-24 h-24 bg-amber-500/20 rounded-full blur-2xl"></div>
               <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl"></div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Services Section */}
-      <section id="services" className={`py-24 ${isDarkMode ? 'bg-slate-900/50' : 'bg-slate-50'}`}>
+      <section id="services" className={`py-20 relative overflow-hidden ${isDarkMode ? 'bg-slate-900/50' : 'bg-slate-50'}`}>
+        <div className={`absolute inset-0 -z-10 bg-grid-pattern opacity-30 ${isDarkMode ? 'text-slate-800' : 'text-slate-200'}`}></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-amber-500 font-bold tracking-wider uppercase text-sm mb-4">Our Expertise</h2>
@@ -271,61 +470,100 @@ export default function App() {
 
           <div className="grid md:grid-cols-3 gap-8">
             {services.map((service, index) => (
-              <motion.div
+              <div
                 key={index}
-                whileHover={{ y: -10 }}
-                className={`group rounded-3xl overflow-hidden transition-all duration-300 ${isDarkMode ? 'bg-slate-950 border border-slate-800' : 'bg-white shadow-xl shadow-slate-200/50'}`}
+                className={`group rounded-3xl overflow-hidden transition-all duration-300 hover:-translate-y-2 flex flex-col ${isDarkMode ? 'bg-slate-950 border border-slate-800' : 'bg-white shadow-xl shadow-slate-200/50'}`}
               >
-                <div className="h-48 overflow-hidden">
+                <div className={`h-56 overflow-hidden ${isDarkMode ? 'bg-slate-900' : 'bg-slate-50'}`}>
                   <img 
                     src={service.image} 
                     alt={service.title} 
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
                     referrerPolicy="no-referrer"
                   />
                 </div>
-                <div className="p-8">
-                  <div className="w-14 h-14 bg-amber-500/10 text-amber-500 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-amber-500 group-hover:text-white transition-colors duration-300">
+                <div className="p-6 flex-grow flex flex-col">
+                  <div className="w-12 h-12 bg-amber-500/10 text-amber-500 rounded-xl flex items-center justify-center mb-4 group-hover:bg-amber-500 group-hover:text-white transition-colors duration-300">
                     {service.icon}
                   </div>
-                  <h4 className="text-xl font-bold mb-4">{service.title}</h4>
-                  <p className={`mb-6 text-sm leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+                  <h4 className="text-lg font-bold mb-2">{service.title}</h4>
+                  <p className={`mb-4 text-sm leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
                     {service.description}
                   </p>
-                  <a href="#contact" className="inline-flex items-center gap-2 text-amber-500 font-bold text-sm hover:gap-3 transition-all">
-                    Learn More <ChevronRight size={16} />
-                  </a>
+                  <div className="mt-auto flex flex-col gap-3">
+                    <a 
+                      href={`https://wa.me/919940207385?text=Hi, I'm interested in your ${service.title} service.`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3 px-6 rounded-xl transition-all shadow-[0_0_15px_rgba(57,255,20,0.5)] hover:shadow-[0_0_25px_rgba(57,255,20,0.8)] active:scale-95 w-full"
+                    >
+                      <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                      </svg>
+                      Book Now
+                    </a>
+                  </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-24 overflow-hidden">
+      <section id="about" className={`py-20 relative overflow-hidden ${isDarkMode ? 'bg-slate-950' : 'bg-white'}`}>
+        <div className={`absolute inset-0 -z-10 bg-dot-pattern opacity-20 ${isDarkMode ? 'text-slate-800' : 'text-slate-300'}`}></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div className="relative">
-              <div className="grid grid-cols-2 gap-4">
-                <img 
-                  src="https://images.unsplash.com/photo-1521791136064-7986c2923216?auto=format&fit=crop&q=80&w=600" 
-                  alt="Team" 
-                  className="rounded-2xl h-64 w-full object-cover shadow-lg"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="space-y-4 pt-8">
-                  <img 
-                    src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=600" 
-                    alt="Meeting" 
-                    className="rounded-2xl h-48 w-full object-cover shadow-lg"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div className="bg-amber-500 p-6 rounded-2xl text-white">
-                    <h5 className="text-4xl font-bold mb-1">100%</h5>
-                    <p className="text-amber-100 text-sm">Client Satisfaction Rate</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 items-center">
+                <motion.div 
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                  className="flex items-center justify-center mb-8 sm:mb-0"
+                >
+                  <div className="w-40 h-40 sm:w-48 sm:h-48 bg-white rounded-full p-3 shadow-[0_20px_50px_rgba(245,158,11,0.3)] border-8 border-amber-500/10 flex items-center justify-center overflow-hidden transform hover:rotate-3 transition-transform duration-500 group">
+                    <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/5 to-transparent pointer-events-none"></div>
+                    <img 
+                      src="https://eliteexpressenterprises.mydpdigital.in/wp-content/uploads/2026/04/logo.jpg" 
+                      alt="Elite Express Logo" 
+                      className="w-full h-full object-contain rounded-full shadow-lg"
+                      referrerPolicy="no-referrer"
+                    />
                   </div>
-                </div>
+                </motion.div>
+                <motion.div 
+                  initial={{ y: 50, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  className=""
+                >
+                  <div className="grid grid-cols-2 sm:grid-cols-1 gap-4">
+                    <motion.div 
+                      initial={{ scale: 0.5, opacity: 0 }}
+                      whileInView={{ scale: 1, opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                      className="bg-amber-500 p-6 sm:p-8 rounded-2xl text-white shadow-xl shadow-amber-500/20 flex flex-col items-center justify-center text-center"
+                    >
+                      <h5 className="text-3xl sm:text-5xl font-bold mb-2">99%</h5>
+                      <p className="text-amber-100 text-[10px] sm:text-sm uppercase font-bold tracking-widest">Success Rate</p>
+                    </motion.div>
+                    <motion.div 
+                      initial={{ scale: 0.5, opacity: 0 }}
+                      whileInView={{ scale: 1, opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.1 }}
+                      className={`${isDarkMode ? 'bg-slate-900 border border-slate-800' : 'bg-white border border-slate-100'} p-6 sm:p-8 rounded-2xl shadow-xl shadow-slate-200/20 flex flex-col items-center justify-center text-center`}
+                    >
+                      <h5 className="text-3xl sm:text-5xl font-bold mb-2 text-amber-500">500+</h5>
+                      <p className={`${isDarkMode ? 'text-slate-400' : 'text-slate-500'} text-[10px] sm:text-sm uppercase font-bold tracking-widest`}>Happy Clients</p>
+                    </motion.div>
+                  </div>
+                </motion.div>
               </div>
               <div className="absolute -bottom-6 -right-6 w-48 h-48 bg-amber-500/10 rounded-full -z-10 blur-3xl"></div>
             </div>
@@ -364,13 +602,41 @@ export default function App() {
               </div>
             </div>
           </div>
+
+          {/* Testimonials Section */}
+          <div className="mt-20">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+              <div className="order-2 lg:order-1">
+                <TestimonialScroll isDarkMode={isDarkMode} />
+              </div>
+              <div className="order-1 lg:order-2">
+                <h4 className="text-amber-500 font-bold tracking-wider uppercase text-sm mb-2">Testimonials</h4>
+                <h3 className="text-3xl lg:text-4xl font-bold mb-6">What Our Clients Say</h3>
+                <p className={`text-lg mb-8 leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+                  We take pride in delivering exceptional service. Hear from our diverse range of clients about how Elite Express Enterprises has improved their security and facility management.
+                </p>
+                <div className="flex flex-wrap gap-4">
+                  <div className={`px-4 py-2 rounded-full border text-sm font-medium ${isDarkMode ? 'bg-slate-900 border-slate-800 text-slate-300' : 'bg-slate-50 border-slate-200 text-slate-700'}`}>
+                    100% Satisfaction
+                  </div>
+                  <div className={`px-4 py-2 rounded-full border text-sm font-medium ${isDarkMode ? 'bg-slate-900 border-slate-800 text-slate-300' : 'bg-slate-50 border-slate-200 text-slate-700'}`}>
+                    24/7 Support
+                  </div>
+                  <div className={`px-4 py-2 rounded-full border text-sm font-medium ${isDarkMode ? 'bg-slate-900 border-slate-800 text-slate-300' : 'bg-slate-50 border-slate-200 text-slate-700'}`}>
+                    Verified Staff
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className={`py-24 ${isDarkMode ? 'bg-slate-900/50' : 'bg-slate-50'}`}>
+      <section id="contact" className={`py-20 relative overflow-hidden ${isDarkMode ? 'bg-slate-900/50' : 'bg-slate-50'}`}>
+        <div className={`absolute inset-0 -z-10 bg-grid-pattern opacity-30 ${isDarkMode ? 'text-slate-800' : 'text-slate-200'}`}></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
             <div>
               <h2 className="text-amber-500 font-bold tracking-wider uppercase text-sm mb-4">Contact Us</h2>
               <h3 className="text-3xl lg:text-4xl font-bold mb-8">Ready to Secure Your Future?</h3>
@@ -417,62 +683,46 @@ export default function App() {
               </div>
             </div>
 
-            <div className={`p-8 rounded-3xl ${isDarkMode ? 'bg-slate-950 border border-slate-800' : 'bg-white shadow-2xl shadow-slate-200/50'}`}>
-              <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold">Full Name</label>
-                    <input 
-                      type="text" 
-                      placeholder="John Doe" 
-                      className={`w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-amber-500 outline-none transition-all ${isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'}`}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold">Phone Number</label>
-                    <input 
-                      type="tel" 
-                      placeholder="+91 00000 00000" 
-                      className={`w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-amber-500 outline-none transition-all ${isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'}`}
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold">Service Interested In</label>
-                  <select className={`w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-amber-500 outline-none transition-all ${isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'}`}>
-                    <option>Security & Housekeeping</option>
-                    <option>Pest Control Services</option>
-                    <option>CCTV Installation</option>
-                    <option>Other</option>
-                  </select>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold">Message</label>
-                  <textarea 
-                    rows={4} 
-                    placeholder="How can we help you?" 
-                    className={`w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-amber-500 outline-none transition-all ${isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'}`}
-                  ></textarea>
-                </div>
-                <button className="w-full bg-amber-500 hover:bg-amber-600 text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-amber-500/30 transition-all active:scale-[0.98]">
-                  Send Message
-                </button>
-              </form>
+            <div className={`p-8 sm:p-12 rounded-3xl flex flex-col items-center text-center relative overflow-hidden ${isDarkMode ? 'bg-slate-950 border border-slate-800' : 'bg-white shadow-2xl shadow-slate-200/50'}`}>
+              <div className={`absolute inset-0 -z-10 bg-dot-pattern opacity-10 ${isDarkMode ? 'text-slate-800' : 'text-slate-200'}`}></div>
+              <div className="w-20 h-20 bg-green-500/10 text-green-500 rounded-full flex items-center justify-center mb-8">
+                <svg className="w-10 h-10 fill-current" viewBox="0 0 24 24">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                </svg>
+              </div>
+              <h4 className="text-2xl font-bold mb-4">Book on WhatsApp</h4>
+              <p className={`mb-8 max-w-md ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+                Skip the forms! Click the button below to chat with us directly on WhatsApp for immediate assistance and quotes.
+              </p>
+              <a 
+                href="https://wa.me/919940207385?text=Hi, I'm interested in your services."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-5 px-10 rounded-2xl transition-all shadow-xl shadow-green-500/30 active:scale-95 text-lg"
+              >
+                Book Now
+              </a>
             </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className={`py-12 border-t ${isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-white border-slate-100'}`}>
+      <footer className={`py-12 relative overflow-hidden border-t ${isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-white border-slate-100'}`}>
+        <div className={`absolute inset-0 -z-10 bg-dot-pattern opacity-10 ${isDarkMode ? 'text-slate-800' : 'text-slate-200'}`}></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center">
-                <Shield className="text-white w-5 h-5" />
+              <div className="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center overflow-hidden">
+                <img 
+                  src="https://eliteexpressenterprises.mydpdigital.in/wp-content/uploads/2026/04/logo.jpg" 
+                  alt="Elite Express Logo" 
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
               </div>
-              <span className="text-lg font-bold tracking-tight">
-                ELITE <span className="text-amber-500">EXPRESS</span>
+              <span className="text-lg font-bold tracking-tight flex flex-col sm:flex-row sm:items-center leading-none sm:leading-normal">
+                Elite Express <span className="text-amber-500 sm:ml-1.5">Enterprises</span>
               </span>
             </div>
             
@@ -480,16 +730,24 @@ export default function App() {
               © 2026 Elite Express Enterprises. All rights reserved.
             </div>
 
-            <div className="flex gap-6">
-              {navLinks.map((link) => (
-                <a 
-                  key={link.name} 
-                  href={link.href}
-                  className={`text-sm font-medium hover:text-amber-500 transition-colors ${isDarkMode ? 'text-slate-500' : 'text-slate-500'}`}
-                >
-                  {link.name}
-                </a>
-              ))}
+            <div className="flex flex-col items-center md:items-end gap-4">
+              <a 
+                href="tel:9940207385" 
+                className={`flex items-center gap-2 hover:text-amber-500 transition-colors ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}
+              >
+                <Phone size={16} className="text-amber-500" /> +91 9940207385
+              </a>
+              <div className="flex gap-6">
+                {navLinks.map((link) => (
+                  <a 
+                    key={link.name} 
+                    href={link.href}
+                    className={`text-sm font-medium hover:text-amber-500 transition-colors ${isDarkMode ? 'text-slate-500' : 'text-slate-500'}`}
+                  >
+                    {link.name}
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         </div>

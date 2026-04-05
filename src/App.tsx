@@ -199,7 +199,7 @@ export default function App() {
     <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'bg-slate-950 text-slate-100' : 'bg-white text-slate-900'}`}>
       
       {/* Navigation */}
-      <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? (isDarkMode ? 'bg-slate-950/90 backdrop-blur-md shadow-lg py-3' : 'bg-white/90 backdrop-blur-md shadow-md py-3') : 'bg-transparent py-5'}`}>
+      <nav className="fixed w-full z-50 transition-all duration-300 bg-white shadow-md py-3">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
@@ -211,7 +211,7 @@ export default function App() {
                   referrerPolicy="no-referrer"
                 />
               </div>
-              <span className={`text-lg sm:text-xl font-bold tracking-tight flex flex-col sm:flex-row sm:items-center leading-none sm:leading-normal ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+              <span className="text-lg sm:text-xl font-extrabold tracking-tight flex flex-col sm:flex-row sm:items-center leading-none sm:leading-normal text-slate-900">
                 Elite Express <span className="text-amber-500 sm:ml-1.5">Enterprises</span>
               </span>
             </div>
@@ -222,14 +222,14 @@ export default function App() {
                 <a 
                   key={link.name} 
                   href={link.href}
-                  className={`text-sm font-medium transition-colors hover:text-amber-500 ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}
+                  className="text-sm font-bold uppercase tracking-wide transition-colors hover:text-amber-500 text-slate-700"
                 >
                   {link.name}
                 </a>
               ))}
               <a 
                 href="tel:9940207385" 
-                className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-2 rounded-full text-sm font-semibold transition-all shadow-lg shadow-amber-500/25 active:scale-95 flex items-center gap-2"
+                className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-2 rounded-full text-sm font-bold transition-all shadow-lg shadow-amber-500/25 active:scale-95 flex items-center gap-2"
               >
                 <Phone size={16} /> Call Now
               </a>
@@ -239,7 +239,7 @@ export default function App() {
             <div className="md:hidden flex items-center gap-4">
               <button 
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className={`p-2 rounded-md ${isDarkMode ? 'text-white' : 'text-slate-900'}`}
+                className="p-2 rounded-md text-slate-900"
               >
                 {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
@@ -248,40 +248,45 @@ export default function App() {
         </div>
 
         {/* Mobile Menu Overlay */}
-        {isMenuOpen && (
-          <div 
-            className={`md:hidden border-t transition-all duration-300 ${isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-white border-slate-100'}`}
-          >
-            <div className="px-4 pt-2 pb-6 space-y-1">
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  onClick={() => setIsMenuOpen(false)}
-                  className={`block px-3 py-4 text-base font-medium rounded-md ${isDarkMode ? 'text-slate-300 hover:bg-slate-900' : 'text-slate-600 hover:bg-slate-50'}`}
-                >
-                  {link.name}
-                </a>
-              ))}
-              <div className="pt-4 space-y-3">
-                <a 
-                  href="tel:9940207385"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="flex items-center justify-center gap-2 w-full bg-amber-500 text-white px-6 py-3 rounded-xl font-semibold"
-                >
-                  <Phone size={18} /> Call Now
-                </a>
-                <a 
-                  href="#contact"
-                  onClick={() => setIsMenuOpen(false)}
-                  className={`block w-full text-center px-6 py-3 rounded-xl font-semibold border ${isDarkMode ? 'border-slate-800 text-white' : 'border-slate-200 text-slate-900'}`}
-                >
-                  Get a Quote
-                </a>
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div 
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden bg-white border-t border-slate-100 overflow-hidden"
+            >
+              <div className="px-4 pt-2 pb-6 space-y-1">
+                {navLinks.map((link) => (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-3 py-4 text-base font-bold text-slate-700 hover:text-amber-500 hover:bg-slate-50 rounded-xl transition-all"
+                  >
+                    {link.name}
+                  </a>
+                ))}
+                <div className="pt-4 space-y-3 px-3">
+                  <a 
+                    href="tel:9940207385"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="flex items-center justify-center gap-2 w-full bg-amber-500 text-white px-6 py-4 rounded-xl font-bold shadow-lg shadow-amber-500/20 active:scale-95 transition-all"
+                  >
+                    <Phone size={18} /> Call Now
+                  </a>
+                  <a 
+                    href="#contact"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block w-full text-center px-6 py-4 rounded-xl font-bold border border-slate-200 text-slate-900 hover:bg-slate-50 transition-all"
+                  >
+                    Get a Quote
+                  </a>
+                </div>
               </div>
-            </div>
-          </div>
-        )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
       {/* Floating Buttons & Scroll to Top */}
@@ -376,27 +381,21 @@ export default function App() {
               <p className={`text-lg mb-10 max-w-lg leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
                 Elite Express Enterprises provides premium security, housekeeping, and surveillance services tailored to your specific needs. Professional, reliable, and always alert.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-3 w-full max-w-lg">
                 <a 
-                  href="#services" 
-                  className="bg-amber-500 hover:bg-amber-600 text-white px-8 py-4 rounded-2xl font-bold text-lg flex items-center justify-center gap-2 transition-all shadow-xl shadow-amber-500/30 active:scale-95 sm:h-fit"
+                  href="tel:9940207385" 
+                  className="group flex-1 sm:flex-none inline-flex items-center justify-center gap-3 px-6 py-3.5 rounded-xl font-bold text-lg transition-all bg-slate-950 border-2 border-amber-500 text-white shadow-[0_0_20px_rgba(245,158,11,0.4)] hover:shadow-[0_0_30px_rgba(245,158,11,0.6)] active:scale-95"
                 >
-                  Our Services <ArrowRight size={20} />
+                  <Phone size={20} className="text-amber-500 shrink-0" />
+                  <span className="tracking-tight">9940207385</span>
                 </a>
-                <div className="flex flex-col gap-3">
-                  <a 
-                    href="tel:9940207385" 
-                    className={`px-8 py-4 rounded-2xl font-bold text-lg flex items-center justify-center gap-2 transition-all border-2 ${isDarkMode ? 'border-slate-800 hover:bg-slate-900 text-white' : 'border-slate-200 hover:bg-slate-50 text-slate-900'}`}
-                  >
-                    <Phone size={20} className="text-amber-500" /> 9940207385
-                  </a>
-                  <a 
-                    href="tel:04422280021" 
-                    className={`px-8 py-4 rounded-2xl font-bold text-lg flex items-center justify-center gap-2 transition-all border-2 ${isDarkMode ? 'border-slate-800 hover:bg-slate-900 text-white' : 'border-slate-200 hover:bg-slate-50 text-slate-900'}`}
-                  >
-                    <Phone size={20} className="text-amber-500" /> 044 22280021
-                  </a>
-                </div>
+                <a 
+                  href="tel:04422280021" 
+                  className={`group flex-1 sm:flex-none inline-flex items-center justify-center gap-3 px-6 py-3.5 rounded-xl font-bold text-lg transition-all border-2 ${isDarkMode ? 'bg-slate-900/60 border-slate-800 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'} hover:border-amber-500 active:scale-95 shadow-sm`}
+                >
+                  <Phone size={20} className="text-amber-500 shrink-0" />
+                  <span className="whitespace-nowrap tracking-tight">044 22280021</span>
+                </a>
               </div>
               
               <div className="mt-12 flex items-center gap-8">
@@ -464,6 +463,8 @@ export default function App() {
         </div>
       </section>
 
+
+
       {/* Services Section */}
       <section id="services" className={`py-20 relative overflow-hidden ${isDarkMode ? 'bg-slate-900/50' : 'bg-slate-50'}`}>
         <div className={`absolute inset-0 -z-10 bg-grid-pattern opacity-30 ${isDarkMode ? 'text-slate-800' : 'text-slate-200'}`}></div>
@@ -517,8 +518,6 @@ export default function App() {
           </div>
         </div>
       </section>
-
-      {/* About Section */}
       <section id="about" className={`py-20 relative overflow-hidden ${isDarkMode ? 'bg-slate-950' : 'bg-white'}`}>
         <div className={`absolute inset-0 -z-10 bg-dot-pattern opacity-20 ${isDarkMode ? 'text-slate-800' : 'text-slate-300'}`}></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -23,6 +23,19 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
+// --- ASSET LINKS (GitHub Storage Guide) ---
+// To use GitHub as storage:
+// 1. Upload your image to a GitHub repo
+// 2. Click the file -> Click "Raw"
+// 3. Use that URL here. Format: https://raw.githubusercontent.com/USER/REPO/BRANCH/FILE
+const ASSETS = {
+  logo: "https://raw.githubusercontent.com/deenapriyanka00217-arch/Elite-Express-Enterprises/main/images/logo.jpg",
+  hero: "https://raw.githubusercontent.com/deenapriyanka00217-arch/Elite-Express-Enterprises/main/images/Hero%20-%20K.%20Karthick%20Narayanan.png",
+  service1: "https://raw.githubusercontent.com/deenapriyanka00217-arch/Elite-Express-Enterprises/main/images/Security%20%26%20Housekeeping.png",
+  service2: "https://raw.githubusercontent.com/deenapriyanka00217-arch/Elite-Express-Enterprises/main/images/Pest%20Control%20Services.png",
+  service3: "https://raw.githubusercontent.com/deenapriyanka00217-arch/Elite-Express-Enterprises/main/images/CCTV%20-%20Installation%20%26%20AMC.png",
+};
+
 const testimonials = [
   {
     name: "Rajesh Kumar",
@@ -172,19 +185,19 @@ export default function App() {
       title: "Security & Housekeeping",
       description: "Professional security personnel and comprehensive housekeeping solutions for residential and commercial spaces.",
       icon: <Shield className="w-8 h-8" />,
-      image: "https://eliteexpressenterprises.mydpdigital.in/wp-content/uploads/2026/04/1.png"
+      image: ASSETS.service1
     },
     {
       title: "Pest Control Services",
       description: "Effective and safe pest management solutions to keep your environment hygienic and pest-free.",
       icon: <Bug className="w-8 h-8" />,
-      image: "https://eliteexpressenterprises.mydpdigital.in/wp-content/uploads/2026/04/2.png"
+      image: ASSETS.service2
     },
     {
       title: "CCTV - Installation & AMC",
       description: "State-of-the-art surveillance systems with professional installation and reliable Annual Maintenance Contracts.",
       icon: <Camera className="w-8 h-8" />,
-      image: "https://eliteexpressenterprises.mydpdigital.in/wp-content/uploads/2026/04/3.png"
+      image: ASSETS.service3
     }
   ];
 
@@ -192,6 +205,7 @@ export default function App() {
     { name: 'Home', href: '#home' },
     { name: 'Services', href: '#services' },
     { name: 'About', href: '#about' },
+    { name: 'Career', href: '#career' },
     { name: 'Contact', href: '#contact' },
   ];
 
@@ -205,7 +219,7 @@ export default function App() {
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 sm:w-10 sm:h-10 bg-amber-500 rounded-full flex items-center justify-center shadow-lg shadow-amber-500/20 overflow-hidden">
                 <img 
-                  src="https://eliteexpressenterprises.mydpdigital.in/wp-content/uploads/2026/04/logo.jpg" 
+                  src={ASSETS.logo} 
                   alt="Elite Express Logo" 
                   className="w-full h-full object-cover"
                   referrerPolicy="no-referrer"
@@ -436,7 +450,7 @@ export default function App() {
             >
               <div className="relative rounded-3xl overflow-hidden shadow-2xl">
                 <img 
-                  src="https://eliteexpressenterprises.mydpdigital.in/wp-content/uploads/2026/04/images.png" 
+                  src={ASSETS.hero} 
                   alt="Elite Express Services" 
                   className="w-full h-[400px] md:h-[500px] max-h-[60vh] md:max-h-none object-cover object-top transition-transform duration-700 hover:scale-105"
                   referrerPolicy="no-referrer"
@@ -534,7 +548,7 @@ export default function App() {
                   <div className="w-40 h-40 sm:w-48 sm:h-48 bg-white rounded-full p-3 border-8 border-amber-500/10 flex items-center justify-center overflow-hidden transform hover:rotate-3 transition-transform duration-500 group">
                     <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/5 to-transparent pointer-events-none"></div>
                     <img 
-                      src="https://eliteexpressenterprises.mydpdigital.in/wp-content/uploads/2026/04/logo.jpg" 
+                      src={ASSETS.logo} 
                       alt="Elite Express Logo" 
                       className="w-full h-full object-contain rounded-full"
                       referrerPolicy="no-referrer"
@@ -639,6 +653,63 @@ export default function App() {
         </div>
       </section>
 
+      {/* Careers Section */}
+      <section id="career" className={`py-20 relative overflow-hidden ${isDarkMode ? 'bg-slate-950' : 'bg-white'}`}>
+        <div className={`absolute inset-0 -z-10 bg-dot-pattern opacity-20 ${isDarkMode ? 'text-slate-800' : 'text-slate-300'}`}></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-amber-500 font-bold tracking-wider uppercase text-sm mb-4">Join Our Team</h2>
+            <h3 className="text-3xl lg:text-4xl font-bold mb-6">Career Vacancy is Going On</h3>
+            <p className={isDarkMode ? 'text-slate-400' : 'text-slate-600'}>
+              We are looking for dedicated professionals to join our growing team. If you are passionate about security and excellence, we want to hear from you.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+            {[
+              "Aso - security",
+              "Security guard",
+              "House keeping executive",
+              "Housekeeping supervisor",
+              "Pest control technician",
+              "Field officers",
+              "Cctv technicians",
+              "Marketing executives"
+            ].map((job, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05 }}
+                className={`p-6 rounded-2xl border flex items-center gap-4 transition-all hover:border-amber-500 group ${isDarkMode ? 'bg-slate-900/50 border-slate-800' : 'bg-slate-50 border-slate-100 shadow-sm'}`}
+              >
+                <div className="w-10 h-10 rounded-full bg-amber-500/10 text-amber-500 flex items-center justify-center group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                  <UserCheck size={20} />
+                </div>
+                <span className="font-bold text-sm sm:text-base">{job}</span>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className={`p-8 rounded-3xl text-center border-2 border-dashed ${isDarkMode ? 'bg-slate-900/30 border-slate-800' : 'bg-amber-50/50 border-amber-200'}`}>
+            <h4 className="text-xl font-bold mb-4">Interested in any of these roles?</h4>
+            <p className={`mb-8 ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+              For more information and to apply, please contact us directly on WhatsApp.
+            </p>
+            <a 
+              href="https://wa.me/919940207385?text=Hi, I'm interested in the Career vacancies at Elite Express Enterprises."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-4 px-8 rounded-2xl transition-all shadow-xl shadow-green-500/20 active:scale-95"
+            >
+              <MessageCircle size={22} />
+              Contact us in WhatsApp
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* Contact Section */}
       <section id="contact" className={`py-20 relative overflow-hidden ${isDarkMode ? 'bg-slate-900/50' : 'bg-slate-50'}`}>
         <div className={`absolute inset-0 -z-10 bg-grid-pattern opacity-30 ${isDarkMode ? 'text-slate-800' : 'text-slate-200'}`}></div>
@@ -727,7 +798,7 @@ export default function App() {
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center overflow-hidden">
                 <img 
-                  src="https://eliteexpressenterprises.mydpdigital.in/wp-content/uploads/2026/04/logo.jpg" 
+                  src={ASSETS.logo} 
                   alt="Elite Express Logo" 
                   className="w-full h-full object-cover"
                   referrerPolicy="no-referrer"

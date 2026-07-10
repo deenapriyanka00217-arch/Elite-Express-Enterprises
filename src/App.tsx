@@ -34,6 +34,7 @@ const ASSETS = {
   service1: "https://raw.githubusercontent.com/deenapriyanka00217-arch/Elite-Express-Enterprises/main/images/Security%20%26%20Housekeeping.png",
   service2: "https://raw.githubusercontent.com/deenapriyanka00217-arch/Elite-Express-Enterprises/main/images/Pest%20Control%20Services.png",
   service3: "https://raw.githubusercontent.com/deenapriyanka00217-arch/Elite-Express-Enterprises/main/images/CCTV%20-%20Installation%20%26%20AMC.png",
+  service4: "https://raw.githubusercontent.com/deenapriyanka00217-arch/Elite-Express-Enterprises/main/images/Staffing%20and%20Manpower.png",
 };
 
 const testimonials = [
@@ -157,7 +158,7 @@ export default function App() {
     "Housekeeping",
     "CCTV",
     "Pest Control",
-    "Risk Control"
+    "Staffing & Manpower provider"
   ];
 
   useEffect(() => {
@@ -198,6 +199,13 @@ export default function App() {
       description: "State-of-the-art surveillance systems with professional installation and reliable Annual Maintenance Contracts.",
       icon: <Camera className="w-8 h-8" />,
       image: ASSETS.service3
+    },
+    {
+      title: "Staffing & Manpower provider",
+      description: "Reliable staffing and manpower solutions for various industries, ensuring you have the right people for the job.",
+      icon: <UserCheck className="w-8 h-8" />,
+      image: ASSETS.service4,
+      customMessage: "Hi, I'm interested in your Staffing & Manpower provider"
     }
   ];
 
@@ -491,7 +499,7 @@ export default function App() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {services.map((service, index) => (
               <div
                 key={index}
@@ -515,7 +523,7 @@ export default function App() {
                   </p>
                   <div className="mt-auto flex flex-col gap-3">
                     <a 
-                      href={`https://wa.me/919940207385?text=Hi, I'm interested in your ${service.title} service.`}
+                      href={`https://wa.me/919940207385?text=${encodeURIComponent(service.customMessage || `Hi, I'm interested in your ${service.title} service.`)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3 px-6 rounded-xl transition-all shadow-[0_0_15px_rgba(57,255,20,0.5)] hover:shadow-[0_0_25px_rgba(57,255,20,0.8)] active:scale-95 w-full"
